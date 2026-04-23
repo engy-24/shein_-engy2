@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>shein by engy</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet"><style>
+:root{--rose:#e8b4b8;--deep:#1a0a0d;--blush:#f5e6e8;--gold:#c9956c;--wine:#7d2e3e;--cream:#fdf6f0;--shadow:rgba(125,46,62,0.15);--green:#4caf7d;--green2:#2e7d52}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+body{background:var(--cream);font-family:'Tajawal',sans-serif;color:var(--deep);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(232,180,184,0.3) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(201,149,108,0.2) 0%,transparent 60%);pointer-events:none;z-index:0}
+header{position:relative;text-align:center;padding:2rem 1rem 1.5rem;z-index:1}
+header::after{content:'';display:block;width:80px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:.9rem auto 0}
+.brand-link{text-decoration:none;display:inline-block}
+.brand-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,8vw,3.5rem);font-weight:900;color:var(--wine);letter-spacing:0.02em;line-height:1}
+.brand-title span{color:var(--gold)}
+.brand-sub{font-size:clamp(.7rem,.9vw,.85rem);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-top:.35rem}
+.fb-badge{display:inline-flex;align-items:center;gap:.4rem;margin-top:.8rem;background:var(--wine);color:#fff;padding:.38rem 1rem;border-radius:2rem;font-size:clamp(.72rem,.8vw,.78rem);letter-spacing:.08em;text-decoration:none;transition:background .2s,transform .2s}
+.fb-badge:hover{background:var(--gold);transform:translateY(-2px)}
+.fb-badge svg{width:14px;height:14px;fill:#fff;flex-shrink:0}
+.main{width:100%;max-width:960px;margin:0 auto;padding:0 .85rem 3rem;position:relative;z-index:1}
+.section-label{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--wine);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.section-label::before{content:'';display:inline-block;width:7px;height:7px;background:var(--gold);border-radius:50%;flex-shrink:0}
+/* Input cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1rem;margin-bottom:1.5rem}
+.card{background:#fff;border-radius:1rem;padding:1.2rem;box-shadow:0 4px 20px var(--shadow);border:1px solid rgba(232,180,184,.3);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold))}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 28px var(--shadow)}
+.card-title{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.8rem}
+.card-badge{display:inline-block;background:var(--blush);color:var(--wine);font-size:.7rem;padding:.2rem .55rem;border-radius:1rem;margin-bottom:.7rem;font-weight:600;white-space:normal;word-break:break-word;max-width:100%;line-height:1.4}
+.inp{width:100%;border:1.5px solid rgba(232,180,184,.5);border-radius:.65rem;padding:.6rem .8rem;font-family:'Tajawal',sans-serif;font-size:clamp(.85rem,2vw,.92rem);color:var(--deep);background:var(--blush);transition:border-color .2s,background .2s;margin-bottom:.6rem;-webkit-appearance:none}
+.inp:focus{outline:none;border-color:var(--gold);background:#fff}
+.inp::placeholder{color:#bba5a9;font-size:.85rem}
+.btn-add{width:100%;background:linear-gradient(135deg,var(--wine),var(--gold));color:#fff;border:none;border-radius:.65rem;padding:.65rem;font-family:'Tajawal',sans-serif;font-size:clamp(.82rem,2vw,.9rem);font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .2s,transform .15s;touch-action:manipulation}
+.btn-add:hover{opacity:.92;transform:scale(.98)}
+.btn-add:disabled{cursor:not-allowed}
+.result-tag{display:block;margin-top:.7rem;font-size:clamp(.95rem,2.5vw,1.05rem);font-weight:700;color:var(--wine);text-align:center;min-height:1.3em;word-break:break-word}
+.confirm-row{display:none;gap:.4rem;margin-top:.6rem}
+.confirm-row.show{display:flex}
+.btn-confirm{flex:1;border:none;border-radius:.65rem;padding:.55rem .3rem;font-family:'Tajawal',sans-serif;font-size:clamp(.75rem,1.8vw,.85rem);font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;touch-action:manipulation;white-space:nowrap}
+.btn-yes{background:linear-gradient(135deg,var(--green),var(--green2));color:#fff}
+.btn-no{background:var(--blush);color:var(--wine);border:1px solid var(--rose)!important}
+.btn-confirm:hover{opacity:.88}
+.added-flash{color:var(--green);font-size:.8rem;text-align:center;margin-top:.25rem;min-height:1em}
+/* Carts — stacked on mobile, side-by-side on larger screens */
+.carts{display:grid;grid-template-columns:1fr;gap:1.2rem;margin-top:2rem}
+@media(min-width:700px){.carts{grid-template-columns:1fr 1fr}}
+.cart-box{background:#fff;border-radius:1rem;padding:1.2rem;box-shadow:0 4px 20px var(--shadow);border:1px solid rgba(232,180,184,.3);display:flex;flex-direction:column;gap:.55rem;min-width:0}
+.cart-header{font-family:'Playfair Display',serif;font-size:clamp(.9rem,2.5vw,1.05rem);color:var(--wine);display:flex;align-items:center;gap:.45rem;flex-wrap:wrap}
+.cart-header svg{width:16px;height:16px;fill:var(--gold);flex-shrink:0}
+.cart-items{list-style:none;min-height:44px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px dashed rgba(232,180,184,.4);gap:.35rem;min-width:0}
+.cart-item-label{overflow:hidden;flex:1;min-width:0}
+.cart-item-label a{color:var(--wine);text-decoration:none;font-size:.74rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.cart-item-label a:hover{text-decoration:underline}
+.no-link{color:#888;font-size:.74rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.item-price{font-weight:700;color:var(--gold);white-space:nowrap;font-size:.82rem;flex-shrink:0}
+.cart-remove{background:none;border:none;cursor:pointer;color:#bba5a9;font-size:.95rem;padding:0 .15rem;line-height:1;flex-shrink:0;touch-action:manipulation}
+.cart-remove:hover{color:var(--wine)}
+.cart-total{padding-top:.6rem;border-top:2px solid var(--rose);display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.9rem;color:var(--deep);flex-wrap:wrap;gap:.3rem}
+.cart-total span:last-child{color:var(--wine);font-family:'Playfair Display',serif;font-size:clamp(1rem,3vw,1.1rem)}
+.empty-msg{color:#cdb8bb;font-size:.8rem;text-align:center;padding:.8rem 0}
+.btn-clear{width:100%;background:var(--blush);color:var(--wine);border:1px solid var(--rose);border-radius:.55rem;padding:.4rem;font-family:'Tajawal',sans-serif;font-size:.76rem;cursor:pointer;transition:background .2s;touch-action:manipulation}
+.btn-clear:hover{background:var(--rose)}
+/* Share panel */
+.share-panel{background:var(--blush);border-radius:.85rem;padding:.9rem;border:1px solid rgba(201,149,108,.35);min-width:0}
+.share-title{font-size:.7rem;font-weight:700;color:var(--wine);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;word-break:break-word}
+.links-area{width:100%;min-height:80px;max-height:160px;border:1.5px solid rgba(201,149,108,.4);border-radius:.55rem;padding:.55rem .7rem;font-family:'Tajawal',sans-serif;font-size:.74rem;color:var(--deep);background:#fff;resize:vertical;direction:ltr;line-height:1.7;overflow-y:auto;word-break:break-all}
+.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.5rem}
+.btn-share{display:flex;align-items:center;justify-content:center;gap:.3rem;border:none;border-radius:.55rem;padding:.48rem .4rem;font-family:'Tajawal',sans-serif;font-size:clamp(.72rem,1.8vw,.78rem);font-weight:700;cursor:pointer;transition:opacity .18s,transform .15s;touch-action:manipulation;white-space:nowrap}
+.btn-share:hover{opacity:.88;transform:scale(.97)}
+.btn-copy{background:var(--wine);color:#fff}
+.btn-wa{background:#25d366;color:#fff}
+.btn-share svg{width:13px;height:13px;fill:currentColor;flex-shrink:0}
+.copy-ok{font-size:.7rem;color:var(--green);text-align:center;min-height:1em;margin-top:.25rem}
+footer{text-align:center;padding:1.2rem;font-size:.72rem;color:#bba5a9;position:relative;z-index:1}
+@media(max-width:400px){
+  .share-btns{grid-template-columns:1fr}
+  .confirm-row{flex-direction:column}
+  .btn-confirm{width:100%}
+}
+</style></head><body>
+
+<header>
+  <a class="brand-link" href="https://web.facebook.com/share/g/18X5TXJgDa/" target="_blank" rel="noopener">
+    <div class="brand-title">shein <span>by engy</span></div>
+    <div class="brand-sub">حاسبة الأسعار</div>
+  </a><br>
+  <a class="fb-badge" href="https://web.facebook.com/share/g/18X5TXJgDa/" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+    انضمي لمجموعتنا على فيسبوك
+  </a>
+</header>
+
+<div class="main">
+  <div class="section-label">احسبي سعرك</div>
+  <div class="grid" id="fieldGrid"></div>
+
+  <div class="carts">
+    <div class="cart-box">
+      <div class="cart-header">
+        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.5 13h9.6c.75 0 1.41-.41 1.75-1.03l3.24-5.88A1 1 0 0021.2 5H5.21l-.67-1.42A1 1 0 003.64 3H2v2h1l3.6 7.59L5.25 14c-.16.28-.25.61-.25.96C5 16.1 5.9 17 7 17h14v-2H7.42a.13.13 0 01-.13-.13l.03-.14.9-1.73z"/></svg>
+        سلة الأزياء (Fashion)
+      </div>
+      <ul class="cart-items" id="cartA"></ul>
+      <div class="cart-total"><span>الإجمالي</span><span id="totalA">٠.٠٠ ج.م</span></div>
+      <button class="btn-clear" onclick="_0xc2f1('A')">🗑 مسح السلة</button>
+      <div class="share-panel" id="shareBoxA" style="display:none">
+        <div class="share-title">🔗 كل روابط الأزياء — شاركيها دفعة واحدة</div>
+        <textarea class="links-area" id="linksA" readonly></textarea>
+        <div class="share-btns">
+          <button class="btn-share btn-copy" onclick="_0xcopy('A')">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 00-2 2v14h2V3h12V1zm3 4H8a2 2 0 00-2 2v14a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h11v14z"/></svg>
+            نسخ الكل
+          </button>
+          <button class="btn-share btn-wa" onclick="_0xwa('A')">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            إرسال واتساب
+          </button>
+        </div>
+        <div class="copy-ok" id="copyOkA"></div>
+      </div>
+    </div>
+
+    <div class="cart-box">
+      <div class="cart-header">
+        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.5 13h9.6c.75 0 1.41-.41 1.75-1.03l3.24-5.88A1 1 0 0021.2 5H5.21l-.67-1.42A1 1 0 003.64 3H2v2h1l3.6 7.59L5.25 14c-.16.28-.25.61-.25.96C5 16.1 5.9 17 7 17h14v-2H7.42a.13.13 0 01-.13-.13l.03-.14.9-1.73z"/></svg>
+        سلة الجمال (Beauty/Accs)
+      </div>
+      <ul class="cart-items" id="cartB"></ul>
+      <div class="cart-total"><span>الإجمالي</span><span id="totalB">٠.٠٠ ج.م</span></div>
+      <button class="btn-clear" onclick="_0xc2f1('B')">🗑 مسح السلة</button>
+      <div class="share-panel" id="shareBoxB" style="display:none">
+        <div class="share-title">🔗 كل روابط الجمال — شاركيها دفعة واحدة</div>
+        <textarea class="links-area" id="linksB" readonly></textarea>
+        <div class="share-btns">
+          <button class="btn-share btn-copy" onclick="_0xcopy('B')">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4a2 2 0 00-2 2v14h2V3h12V1zm3 4H8a2 2 0 00-2 2v14a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2zm0 16H8V7h11v14z"/></svg>
+            نسخ الكل
+          </button>
+          <button class="btn-share btn-wa" onclick="_0xwa('B')">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            إرسال واتساب
+          </button>
+        </div>
+        <div class="copy-ok" id="copyOkB"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>shein by engy &copy; 2025</footer>
+
+<script>
+(function(){
+var _d={"a":atob("MTIuOQ=="),"b":atob("MTQuNQ=="),"c":atob("MTQuNQ=="),"d":atob("MTYuMA==")};
+var _0x3a=[parseFloat(_d.a),parseFloat(_d.b),parseFloat(_d.c),parseFloat(_d.d)];
+var _0xf9=function(v,i){var _p1=(0x1*v)+(v*(0x19/0x64));return(_p1*_0x3a[i])*(1+(0x19/0x64));};
+var _0x7b=["ملابس / حقائب / أحذية بري","اكسسوارات ومكياج بري","ملابس / حقائب / أحذية جوي","اكسسوارات ومكياج جوي"];
+var _0x4d=["A","B","A","B"];
+var _0x1c={A:[],B:[]};
+var _0xpend={};
+
+function _0xb3(i){
+  var w=document.createElement('div');w.className='card';
+  var bg=document.createElement('span');bg.className='card-badge';bg.textContent=_0x7b[i];
+  var tt=document.createElement('div');tt.className='card-title';tt.textContent='حقل '+(i+1);
+  var p=document.createElement('input');p.className='inp';p.type='number';p.min='0';p.step='0.01';p.placeholder='السعر بالريال السعودي (ر.س)';p.id='p'+i;
+  var l=document.createElement('input');l.className='inp';l.type='url';l.placeholder='رابط المنتج (اختياري)';l.id='l'+i;
+  var b=document.createElement('button');b.className='btn-add';b.textContent='احسبي السعر';b.id='calc'+i;
+  b.onclick=function(){_0xe1(i);};
+  var r=document.createElement('span');r.className='result-tag';r.id='r'+i;
+  var cr=document.createElement('div');cr.className='confirm-row';cr.id='crow'+i;
+  var by=document.createElement('button');by.className='btn-confirm btn-yes';by.textContent='✓ أضيفي للسلة';
+  var bn=document.createElement('button');bn.className='btn-confirm btn-no';bn.textContent='✗ لا';
+  (function(idx){by.onclick=function(){_0xa7(idx);};bn.onclick=function(){_0xreset(idx);};})(i);
+  cr.appendChild(by);cr.appendChild(bn);
+  var fl=document.createElement('span');fl.className='added-flash';fl.id='flash'+i;
+  w.appendChild(bg);w.appendChild(tt);w.appendChild(p);w.appendChild(l);w.appendChild(b);w.appendChild(r);w.appendChild(cr);w.appendChild(fl);
+  document.getElementById('fieldGrid').appendChild(w);
+}
+for(var _i=0;_i<4;_i++)_0xb3(_i);
+
+function _0xe1(idx){
+  var pv=parseFloat(document.getElementById('p'+idx).value);
+  if(!pv||pv<=0){document.getElementById('r'+idx).textContent='⚠ أدخلي سعراً صحيحاً';return;}
+  var res=_0xf9(pv,idx);
+  _0xpend[idx]=res;
+  document.getElementById('r'+idx).textContent='💰 السعر: '+res.toFixed(2)+' ج.م';
+  document.getElementById('crow'+idx).className='confirm-row show';
+  document.getElementById('flash'+idx).textContent='';
+  document.getElementById('calc'+idx).disabled=true;
+  document.getElementById('calc'+idx).style.opacity='0.5';
+}
+
+function _0xa7(idx){
+  var lv=document.getElementById('l'+idx).value.trim();
+  _0x1c[_0x4d[idx]].push({price:_0xpend[idx],link:lv||null,field:idx});
+  _0xd4();
+  document.getElementById('flash'+idx).textContent='✅ تمت الإضافة للسلة!';
+  _0xreset(idx);
+}
+
+function _0xreset(idx){
+  document.getElementById('crow'+idx).className='confirm-row';
+  document.getElementById('calc'+idx).disabled=false;
+  document.getElementById('calc'+idx).style.opacity='1';
+  delete _0xpend[idx];
+}
+
+function _0xd4(){
+  ['A','B'].forEach(function(c){
+    var ul=document.getElementById('cart'+c);
+    ul.innerHTML='';
+    var total=0;
+    var items=_0x1c[c];
+    var lines=[];
+
+    if(!items.length){
+      ul.innerHTML='<li class="empty-msg">السلة فارغة</li>';
+      document.getElementById('total'+c).textContent='٠.٠٠ ج.م';
+      document.getElementById('shareBox'+c).style.display='none';
+      return;
+    }
+
+    items.forEach(function(it,ix){
+      var li=document.createElement('li');li.className='cart-item';
+      var left=document.createElement('div');left.className='cart-item-label';
+      if(it.link){
+        var a=document.createElement('a');a.href=it.link;a.target='_blank';a.rel='noopener';a.textContent=it.link;left.appendChild(a);
+        lines.push((ix+1)+'. '+it.link+'\n    💰 '+it.price.toFixed(2)+' ج.م');
+      } else {
+        var s=document.createElement('span');s.className='no-link';s.textContent=_0x7b[it.field]+' (بدون رابط)';left.appendChild(s);
+        lines.push((ix+1)+'. ['+_0x7b[it.field]+'] — '+it.price.toFixed(2)+' ج.م');
+      }
+      var rp=document.createElement('span');rp.className='item-price';rp.textContent=it.price.toFixed(2)+' ج.م';
+      var rm=document.createElement('button');rm.className='cart-remove';rm.innerHTML='&times;';
+      (function(cc,i){rm.onclick=function(){_0x1c[cc].splice(i,1);_0xd4();};})(c,ix);
+      li.appendChild(left);li.appendChild(rp);li.appendChild(rm);
+      ul.appendChild(li);
+      total+=it.price;
+    });
+
+    document.getElementById('total'+c).textContent=total.toFixed(2)+' ج.م';
+
+    var cartName=c==='A'?'👗 سلة الأزياء (Fashion)':'💄 سلة الجمال (Beauty/Accs)';
+    var txt=cartName+'\n'+'━'.repeat(28)+'\n\n'+lines.join('\n\n')+'\n\n'+'━'.repeat(28)+'\n🧮 الإجمالي: '+total.toFixed(2)+' ج.م\n\n🛍 shein by engy\n🔗 https://web.facebook.com/share/g/18X5TXJgDa/';
+    document.getElementById('links'+c).value=txt;
+    document.getElementById('shareBox'+c).style.display='block';
+  });
+}
+
+window._0xc2f1=function(c){_0x1c[c]=[];_0xd4();};
+
+window._0xcopy=function(c){
+  var ta=document.getElementById('links'+c);
+  var txt=ta.value;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){_0xok(c);}).catch(function(){_0xfb(ta,c);});
+  } else {_0xfb(ta,c);}
+};
+
+function _0xfb(ta,c){ta.select();ta.setSelectionRange(0,99999);try{document.execCommand('copy');_0xok(c);}catch(e){}}
+function _0xok(c){var el=document.getElementById('copyOk'+c);el.textContent='✅ تم النسخ بنجاح!';setTimeout(function(){el.textContent='';},2500);}
+
+window._0xwa=function(c){
+  window.open('https://wa.me/?text='+encodeURIComponent(document.getElementById('links'+c).value),'_blank');
+};
+
+_0xd4();
+})();
+</script>
+</body></html>
