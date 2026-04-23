@@ -16,7 +16,6 @@ header::after{content:'';display:block;width:80px;height:2px;background:linear-g
 .main{width:100%;max-width:960px;margin:0 auto;padding:0 .85rem 3rem;position:relative;z-index:1}
 .section-label{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--wine);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
 .section-label::before{content:'';display:inline-block;width:7px;height:7px;background:var(--gold);border-radius:50%;flex-shrink:0}
-/* Input cards grid */
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:1rem;margin-bottom:1.5rem}
 .card{background:#fff;border-radius:1rem;padding:1.2rem;box-shadow:0 4px 20px var(--shadow);border:1px solid rgba(232,180,184,.3);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold))}
@@ -37,7 +36,6 @@ header::after{content:'';display:block;width:80px;height:2px;background:linear-g
 .btn-no{background:var(--blush);color:var(--wine);border:1px solid var(--rose)!important}
 .btn-confirm:hover{opacity:.88}
 .added-flash{color:var(--green);font-size:.8rem;text-align:center;margin-top:.25rem;min-height:1em}
-/* Carts — stacked on mobile, side-by-side on larger screens */
 .carts{display:grid;grid-template-columns:1fr;gap:1.2rem;margin-top:2rem}
 @media(min-width:700px){.carts{grid-template-columns:1fr 1fr}}
 .cart-box{background:#fff;border-radius:1rem;padding:1.2rem;box-shadow:0 4px 20px var(--shadow);border:1px solid rgba(232,180,184,.3);display:flex;flex-direction:column;gap:.55rem;min-width:0}
@@ -57,7 +55,6 @@ header::after{content:'';display:block;width:80px;height:2px;background:linear-g
 .empty-msg{color:#cdb8bb;font-size:.8rem;text-align:center;padding:.8rem 0}
 .btn-clear{width:100%;background:var(--blush);color:var(--wine);border:1px solid var(--rose);border-radius:.55rem;padding:.4rem;font-family:'Tajawal',sans-serif;font-size:.76rem;cursor:pointer;transition:background .2s;touch-action:manipulation}
 .btn-clear:hover{background:var(--rose)}
-/* Share panel */
 .share-panel{background:var(--blush);border-radius:.85rem;padding:.9rem;border:1px solid rgba(201,149,108,.35);min-width:0}
 .share-title{font-size:.7rem;font-weight:700;color:var(--wine);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;word-break:break-word}
 .links-area{width:100%;min-height:80px;max-height:160px;border:1.5px solid rgba(201,149,108,.4);border-radius:.55rem;padding:.55rem .7rem;font-family:'Tajawal',sans-serif;font-size:.74rem;color:var(--deep);background:#fff;resize:vertical;direction:ltr;line-height:1.7;overflow-y:auto;word-break:break-all}
@@ -68,8 +65,6 @@ header::after{content:'';display:block;width:80px;height:2px;background:linear-g
 .btn-wa{background:#25d366;color:#fff}
 .btn-share svg{width:13px;height:13px;fill:currentColor;flex-shrink:0}
 .copy-ok{font-size:.7rem;color:var(--green);text-align:center;min-height:1em;margin-top:.25rem}
-
-/* Edit popup */
 .cart-actions{display:flex;gap:.2rem;flex-shrink:0}
 .btn-edit{background:none;border:none;cursor:pointer;color:var(--gold);font-size:.85rem;padding:0 .15rem;line-height:1;touch-action:manipulation}
 .btn-edit:hover{color:var(--wine)}
@@ -169,7 +164,23 @@ footer{text-align:center;padding:1.2rem;font-size:.72rem;color:#bba5a9;position:
 (function(){
 var _d={"a":atob("MTIuOQ=="),"b":atob("MTQuNQ=="),"c":atob("MTQuNQ=="),"d":atob("MTYuMA==")};
 var _0x3a=[parseFloat(_d.a),parseFloat(_d.b),parseFloat(_d.c),parseFloat(_d.d)];
-var _0xf9=function(v,i){var _p1=(0x1*v)+(v*(0x19/0x64));return(_p1*_0x3a[i])*(1+(0x19/0x64));};
+
+// الفورمولا الأصلية خطوة خطوة:
+// خطوة 1: v * 1.25  (زيادة ربع على السعر الأصلي)
+// خطوة 2: * معامل العملة
+// خطوة 3 (معدّلة): بدل * 1.25 — نضيف هامش ثابت حسب الشريحة
+var _0xf9=function(v,i){
+  var step1 = v * 1.25;                // خطوة 1: زيادة ربع على السعر
+  var step2 = step1 * _0x3a[i];       // خطوة 2: ضرب في معامل العملة
+  // خطوة 3: إضافة هامش حسب الشريحة
+  var margin;
+  if     (step2 <= 50)  { margin = 30;  }
+  else if(step2 <= 100) { margin = 50;  }
+  else if(step2 <= 500) { margin = 100; }
+  else                  { margin = 130; }
+  return step2 + margin;
+};
+
 var _0x7b=["ملابس / حقائب / أحذية بري","اكسسوارات ومكياج بري","ملابس / حقائب / أحذية جوي","اكسسوارات ومكياج جوي"];
 var _0x4d=["A","B","A","B"];
 var _0x1c={A:[],B:[]};
@@ -270,13 +281,10 @@ function _0xd4(){
   });
 }
 
-
 var _0xedit={cart:null,idx:null};
 window._0xopenEdit=function(cart,idx){
   _0xedit={cart:cart,idx:idx};
   var it=_0x1c[cart][idx];
-  // recalculate original SAR price from EGP result (reverse the formula)
-  // stored price is the EGP result; we show it as-is and let user re-enter SAR
   document.getElementById('editPrice').value='';
   document.getElementById('editLink').value=it.link||'';
   document.getElementById('editPopup').className='edit-popup open';
@@ -299,7 +307,6 @@ window._0xsave=function(){
   _0xd4();
   _0xcloseEdit();
 };
-// close on backdrop click
 document.getElementById('editPopup').addEventListener('click',function(e){if(e.target===this)_0xcloseEdit();});
 
 window._0xc2f1=function(c){_0x1c[c]=[];_0xd4();};
