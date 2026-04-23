@@ -25,6 +25,10 @@ header::after{content:'';display:block;width:80px;height:2px;background:linear-g
 .inp{width:100%;border:1.5px solid rgba(232,180,184,.5);border-radius:.65rem;padding:.6rem .8rem;font-family:'Tajawal',sans-serif;font-size:clamp(.85rem,2vw,.92rem);color:var(--deep);background:var(--blush);transition:border-color .2s,background .2s;margin-bottom:.6rem;-webkit-appearance:none}
 .inp:focus{outline:none;border-color:var(--gold);background:#fff}
 .inp::placeholder{color:#bba5a9;font-size:.85rem}
+.field-wrap{position:relative;margin-bottom:.6rem}
+.field-wrap .inp{margin-bottom:0;padding-left:2.2rem}
+.btn-field-clear{position:absolute;left:.55rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#bba5a9;font-size:1.1rem;line-height:1;padding:0;touch-action:manipulation;transition:color .15s}
+.btn-field-clear:hover{color:var(--wine)}
 .btn-add{width:100%;background:linear-gradient(135deg,var(--wine),var(--gold));color:#fff;border:none;border-radius:.65rem;padding:.65rem;font-family:'Tajawal',sans-serif;font-size:clamp(.82rem,2vw,.9rem);font-weight:700;cursor:pointer;letter-spacing:.04em;transition:opacity .2s,transform .15s;touch-action:manipulation}
 .btn-add:hover{opacity:.92;transform:scale(.98)}
 .btn-add:disabled{cursor:not-allowed}
@@ -170,15 +174,14 @@ var _0x3a=[parseFloat(_d.a),parseFloat(_d.b),parseFloat(_d.c),parseFloat(_d.d)];
 // خطوة 2: * معامل العملة
 // خطوة 3 (معدّلة): بدل * 1.25 — نضيف هامش ثابت حسب الشريحة
 var _0xf9=function(v,i){
-  var step1 = v * 1.25;                // خطوة 1: زيادة ربع على السعر
-  var step2 = step1 * _0x3a[i];       // خطوة 2: ضرب في معامل العملة
-  // خطوة 3: إضافة هامش حسب الشريحة
-  var margin;
-  if     (step2 <= 50)  { margin = 30;  }
-  else if(step2 <= 100) { margin = 50;  }
-  else if(step2 <= 500) { margin = 100; }
-  else                  { margin = 130; }
-  return step2 + margin;
+  var step1 = v * 1.25;                // Phase 1: السعر * 1.25
+  var step2 = step1 * _0x3a[i];       // Phase 2: * معامل العملة
+  // Phase 3: إضافة حسب الشريحة
+  if     (step2 <= 50)                        { step2 += 50;  }
+  else if(step2 >= 100 && step2 <= 500)       { step2 += 50;  }
+  else if(step2 >= 500 && step2 <= 600)       { step2 += 100; }
+  else                                        { step2 += 130; }
+  return step2;
 };
 
 var _0x7b=["ملابس / حقائب / أحذية بري","اكسسوارات ومكياج بري","ملابس / حقائب / أحذية جوي","اكسسوارات ومكياج جوي"];
@@ -190,8 +193,16 @@ function _0xb3(i){
   var w=document.createElement('div');w.className='card';
   var bg=document.createElement('span');bg.className='card-badge';bg.textContent=_0x7b[i];
   var tt=document.createElement('div');tt.className='card-title';tt.textContent='حقل '+(i+1);
+  var pwrap=document.createElement('div');pwrap.className='field-wrap';
   var p=document.createElement('input');p.className='inp';p.type='number';p.min='0';p.step='0.01';p.placeholder='السعر بالريال السعودي (ر.س)';p.id='p'+i;
+  var pc=document.createElement('button');pc.className='btn-field-clear';pc.type='button';pc.title='مسح السعر';pc.innerHTML='&times;';
+  (function(idx){pc.onclick=function(){document.getElementById('p'+idx).value='';document.getElementById('r'+idx).textContent='';document.getElementById('crow'+idx).className='confirm-row';document.getElementById('calc'+idx).disabled=false;document.getElementById('calc'+idx).style.opacity='1';delete _0xpend[idx];};})(i);
+  pwrap.appendChild(p);pwrap.appendChild(pc);
+  var lwrap=document.createElement('div');lwrap.className='field-wrap';
   var l=document.createElement('input');l.className='inp';l.type='url';l.placeholder='رابط المنتج (اختياري)';l.id='l'+i;
+  var lc=document.createElement('button');lc.className='btn-field-clear';lc.type='button';lc.title='مسح الرابط';lc.innerHTML='&times;';
+  (function(idx){lc.onclick=function(){document.getElementById('l'+idx).value='';};})(i);
+  lwrap.appendChild(l);lwrap.appendChild(lc);
   var b=document.createElement('button');b.className='btn-add';b.textContent='احسبي السعر';b.id='calc'+i;
   b.onclick=function(){_0xe1(i);};
   var r=document.createElement('span');r.className='result-tag';r.id='r'+i;
@@ -201,7 +212,7 @@ function _0xb3(i){
   (function(idx){by.onclick=function(){_0xa7(idx);};bn.onclick=function(){_0xreset(idx);};})(i);
   cr.appendChild(by);cr.appendChild(bn);
   var fl=document.createElement('span');fl.className='added-flash';fl.id='flash'+i;
-  w.appendChild(bg);w.appendChild(tt);w.appendChild(p);w.appendChild(l);w.appendChild(b);w.appendChild(r);w.appendChild(cr);w.appendChild(fl);
+  w.appendChild(bg);w.appendChild(tt);w.appendChild(pwrap);w.appendChild(lwrap);w.appendChild(b);w.appendChild(r);w.appendChild(cr);w.appendChild(fl);
   document.getElementById('fieldGrid').appendChild(w);
 }
 for(var _i=0;_i<4;_i++)_0xb3(_i);
