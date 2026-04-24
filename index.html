@@ -171,15 +171,12 @@ var _0x3a=[parseFloat(_d.a),parseFloat(_d.b),parseFloat(_d.c),parseFloat(_d.d)];
 
 // الفورمولا الأصلية خطوة خطوة:
 // خطوة 1: v * 1.25  (زيادة ربع على السعر الأصلي)
-// خطوة 2: * معامل العملة
-// خطوة 3 (معدّلة): بدل * 1.25 — نضيف هامش ثابت حسب الشريحة
 var _0xf9=function(v,i){
-  var step1 = v * 1.25;                // Phase 1: السعر * 1.25
-  var step2 = step1 * _0x3a[i];       // Phase 2: * معامل العملة
-  // Phase 3: إضافة حسب الشريحة
-  if     (step2 <= 50)                        { step2 += 50;  }
+  var step1 = v * 1.25;
+  var step2 = step1 * _0x3a[i];
+  if     (step2 < 100)                        { step2 += 30;  }
   else if(step2 >= 100 && step2 <= 500)       { step2 += 50;  }
-  else if(step2 >= 500 && step2 <= 600)       { step2 += 100; }
+  else if(step2 >  500 && step2 <= 600)       { step2 += 100; }
   else                                        { step2 += 130; }
   return step2;
 };
